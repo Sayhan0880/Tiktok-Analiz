@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repost Analiz</title>
+<style>
+:root{--bg:#fff;--fg:#111;--mut:#666;--card:#f1f2f4;--acc:#fe2c55;--bar:#14b8b0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0f12;--fg:#f2f2f2;--mut:#a0a0a8;--card:#1b1b20}}
+:root[data-theme="dark"]{--bg:#0f0f12;--fg:#f2f2f2;--mut:#a0a0a8;--card:#1b1b20}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:620px;margin:0 auto;padding:0 16px 48px}
+.hero{margin:0 -16px 18px;padding:44px 20px 30px;text-align:center;color:#fff;background:radial-gradient(circle at 20% 0,#25f4ee55,transparent 50%),radial-gradient(circle at 90% 20%,#fe2c55aa,transparent 55%),#14141c;border-radius:0 0 28px 28px}
+.hero h1{font-size:30px;line-height:1.2;margin:0 0 10px}
+.hero p{margin:0 auto 18px;max-width:420px;color:#ddd;font-size:15px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px}
+.badges span{background:#ffffff1f;border:1px solid #ffffff33;border-radius:99px;padding:5px 12px;font-size:13px}
+.drop{display:block;background:#fff;color:#111;border-radius:16px;padding:20px 14px;font-weight:700;cursor:pointer;box-shadow:0 8px 28px #0006}
+.drop small{display:block;font-weight:400;color:#666;margin-top:2px}
+.drop input{display:none}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px}
+h2{font-size:16px;margin:0 0 10px}
+.s{color:var(--mut);font-size:14px}
+ol{margin:0;padding-left:20px;font-size:14px;color:var(--mut)}ol li{margin:3px 0}
+details summary{cursor:pointer;font-weight:600}
+.big{font-size:60px;font-weight:800;color:var(--acc);line-height:1.1;text-align:center}
+.lbl{text-align:center;color:var(--mut);font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st{background:var(--bg);border-radius:12px;padding:10px}
+.st b{display:block;font-size:19px;word-break:break-word}.st span{font-size:12px;color:var(--mut)}
+.row{display:flex;align-items:center;gap:8px;font-size:13px;margin:3px 0}
+.row span:first-child{width:46px;color:var(--mut);flex:none}
+.row .b{height:10px;background:var(--bar);border-radius:5px;min-width:2px}
+.prof{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#fe2c55,#25f4ee);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;flex:none}
+.prof small{color:var(--mut);display:block;white-space:pre-wrap}
+.nb{font-size:13px;color:var(--mut);word-break:break-word;margin-top:8px}
+button,.btn{width:100%;padding:13px;border:0;border-radius:12px;background:var(--acc);color:#fff;font-size:16px;font-weight:700}
+label.chk{display:block;font-size:14px;margin:0 0 10px;color:var(--mut)}
+.err{color:var(--acc);font-size:14px;text-align:center;min-height:20px}
+.hide{display:none}
+.ok{list-style:none;padding:0;margin:0;font-size:14px}.ok li{padding:3px 0}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin-top:20px}
+.hero{position:relative}
+.lang{position:absolute;top:12px;right:14px;background:#ffffff22;border:1px solid #ffffff44;color:#fff;border-radius:99px;padding:5px 12px;font-size:13px;width:auto}
+.bd{display:flex;gap:10px;align-items:center;background:var(--bg);border-radius:12px;padding:10px;margin-bottom:8px}.bd i{font-style:normal;font-size:28px}.bd b{display:block}.bd span{font-size:13px;color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.chips span{background:var(--bg);border-radius:99px;padding:4px 10px;font-size:13px}.chips em{font-style:normal;color:var(--mut);margin-left:4px}
+details p{margin:8px 0 0}
+.sup{position:absolute;top:12px;left:14px;background:#ffd54a;color:#111;border-radius:99px;padding:5px 12px;font-size:13px;font-weight:700;text-decoration:none}
+.in{width:100%;padding:11px;border-radius:10px;border:1px solid var(--mut);background:var(--bg);color:var(--fg);font-size:14px}
+.cm{margin:12px 0}.cm small{display:block;margin-bottom:2px}
+.cm .r{display:flex;align-items:center;gap:8px;font-size:13px;margin:2px 0}.cm .r span{width:80px;flex:none;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--mut)}
+.cm .r div{height:10px;border-radius:5px;background:var(--bar);min-width:2px}.cm .r.win div{background:var(--acc)}
+.av{position:relative;overflow:hidden;cursor:pointer;background-size:cover;background-position:center}.av input{display:none}
+.row.w span:first-child{width:36%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+<main>
+<section class="hero" id="hero"><a class="sup hide" id="sup" href="#" target="_blank" rel="noopener noreferrer">☕ Destek ol · 2 ₺</a><button class="lang" id="lang" type="button">EN</button>
+  <h1>TikTok verinin<br>hikayesini keşfet</h1>
+  <p>İndirdiğin TikTok veri dosyasını yükle, repost, izleme ve takipçi istatistiklerini saniyeler içinde gör.</p>
+  <div class="badges"><span>🔒 Tarayıcında çalışır</span><span>🚫 Giriş / şifre yok</span><span>📡 Sunucuya gönderilmez</span></div>
+  <label class="drop"><input id="f" type="file" accept=".zip,.json,application/json,application/zip">📂 ZIP veya JSON dosyanı seç<small>TikTok'tan indirdiğin .zip veya .json dosyası</small></label>
+  <p class="err" id="err" style="margin-top:12px"></p>
+</section>
+
+<div id="intro">
+  <div class="card"><h2>Nasıl yapılır?</h2><ol>
+    <li>TikTok → Ayarlar → Hesap → <b>Verilerini indir</b></li>
+    <li>Biçim olarak <b>JSON</b> seç, hazır olunca indir (birkaç gün sürebilir)</li>
+    <li>İndirdiğin <b>ZIP</b> dosyasını açmadan yukarıdan seç</li></ol></div>
+  <div class="card"><h2>Neden güvenli?</h2><ul class="ok">
+    <li>✅ Dosya cihazından çıkmaz, hiçbir sunucuya gönderilmez</li>
+    <li>✅ Doğrula: internetini kapat, site yine çalışır</li>
+    <li>✅ Mesajlarına, giriş IP'lerine, e-posta, telefon, adres, doğum tarihi ve cihaz kimliklerine dokunmaz</li>
+    <li>✅ Hesabına giriş yapmaz, şifre istemez</li>
+    <li>✅ Çerez, takip veya reklam yok</li></ul></div>
+</div>
+
+<div id="res" class="hide">
+  <div class="card"><h2>Profil</h2><div id="prof"></div><div class="grid" id="pst"></div></div>
+  <div class="card"><div class="big" id="cnt"></div><div class="lbl">repost</div></div>
+  <div class="card"><h2>Repost Galaksin ✨</h2>
+    <p class="s" style="margin:0 0 10px">Her yıl bir halka, her yıldız bir repost günü. Parlak yıldızlar yoğun günler.</p>
+    <canvas id="gal" width="720" height="720" style="width:100%;height:auto;border-radius:14px;display:block"></canvas>
+    <input type="range" id="gs" min="0" max="1000" value="1000" style="width:100%;margin:10px 0">
+    <div class="grid"><button id="gp" type="button">▶ Yolculuğu oynat</button><button id="gd" type="button">Galaksiyi indir (PNG)</button></div></div>
+  <div class="card"><h2>Rozetlerin</h2><div id="bdg"></div></div>
+  <div class="card"><div class="grid" id="stats"></div></div>
+  <div class="card"><h2>Repost: yıllara göre</h2><div id="years"></div></div>
+  <div class="card"><h2>Repost: haftanın günleri</h2><div id="wd"></div></div>
+  <div class="card"><h2>Repost: saatler</h2><div id="hr"></div></div>
+  <div class="card"><h2>Takipçi büyümesi (yıl)</h2><div id="fy"></div><div class="nb" id="nb"></div></div>
+  <div class="card"><h2>İzleme</h2><div class="grid" id="wst"></div><div id="wy" style="margin-top:10px"></div><h2 style="margin-top:12px">İzleme: haftanın günleri</h2><div id="ww"></div><h2 style="margin-top:12px">İzleme: saatler</h2><div id="wh"></div></div>
+  <div class="card"><h2>Paylaştığın videolar</h2><div class="grid" id="pv"></div><h2 style="margin-top:12px">En çok beğenilenler</h2><div id="ptop"></div><h2 style="margin-top:12px">En çok kullandığın sesler</h2><div class="chips" id="psd"></div><h2>Beğeniye göre haftanın günü (ortalama)</h2><div id="pwd"></div></div>
+  <div class="card"><h2>TikTok Live</h2><div class="grid" id="lv"></div><div id="ly" style="margin-top:10px"></div></div>
+  <div class="card"><h2>TikTok'un başka yerlerden topladığı veri</h2><p class="s" style="margin:0 0 10px">Başka uygulama ve sitelerin TikTok'a ilettiği olaylar.</p><div class="grid" id="ot"></div><h2 style="margin-top:12px">En çok olay gelen kaynaklar</h2><div id="os"></div><h2 style="margin-top:12px">Olay türleri</h2><div id="oe"></div></div>
+  <div class="card"><label class="chk"><input type="checkbox" id="sk"> Arama geçmişimi göster (kişisel)</label><div class="chips hide" id="sch"></div></div>
+  <div class="card"><h2>Yorum analizi</h2><div class="grid" id="cst"></div><h2 style="margin-top:12px">En çok kullandığın kelimeler</h2><div class="chips" id="cw"></div><h2>En çok kullandığın emojiler</h2><div class="chips" id="ce"></div><h2>Yorumlar: yıllara göre</h2><div id="cy"></div></div>
+  <div class="card"><h2>Aktivite özeti</h2><div class="grid" id="oth"></div></div>
+  <div class="card"><h2>Paylaşım yöntemleri</h2><div id="shm"></div></div>
+  <div class="card"><h2>Arkadaşınla karşılaştır</h2>
+  <p class="s" style="margin:0 0 10px">Sunucu yok: sonuçlarından kısa bir kod üretirsin, arkadaşın kendi sitesinde yapıştırır. Kodda sadece toplam sayılar ve yazdığın takma ad olur, kullanıcı adın, link ya da içerik olmaz.</p>
+  <input class="in" id="cn" maxlength="16"><button id="mk" type="button" style="margin-top:8px">Kodumu oluştur</button>
+  <div id="mw" class="hide" style="margin-top:8px"><input class="in" id="mine" readonly><div class="grid" style="margin-top:8px"><button id="cp" type="button">Kopyala</button><button id="sh2" type="button">Paylaş</button></div></div>
+  <h2 style="margin-top:16px">Arkadaşının kodu</h2><input class="in" id="fc"><button id="go" type="button" style="margin-top:8px">Karşılaştır</button>
+  <p class="err" id="ce"></p><div id="cr"></div></div>
+  <div class="card"><label class="chk"><input type="checkbox" id="un"> Kullanıcı adımı ve fotoğrafımı karta ekle</label><button id="share">Paylaşım kartını indir (PNG)</button></div>
+  <div class="card"><h2>Okunmayan bölümler</h2><p class="s" style="margin:0">Mesajlar, giriş geçmişi (IP), e-posta, telefon, adres, doğum tarihi, cihaz kimlikleri, satın alımlar ve reklam verisine bu site hiç bakmaz.</p></div>
+</div>
+<div class="card"><details><summary>Gizlilik ve çerezler</summary>
+<p class="s">Bu site çerez, analitik, reklam veya takip aracı kullanmaz. Seçtiğin dosya yalnızca tarayıcının belleğinde işlenir; yüklenmez, kaydedilmez, sekmeyi kapatınca sonuçlar silinir. Tarayıcında sadece dil tercihin saklanır.</p>
+<p class="s">Siteyi barındıran servis (ör. GitHub Pages, Netlify) standart teknik ziyaret kayıtları tutabilir, bu bizim kontrolümüzde değildir. Yorum kelimeleri paylaşım kartına girmez, kullanıcı adın sadece sen işaretlersen girer.</p>
+<p class="s">TikTok, ilgili hak sahiplerinin markasıdır. Bu site TikTok veya ByteDance ile bağlantılı değildir, onlar tarafından onaylanmamıştır.</p></details></div>
+<p class="foot">TikTok veya ByteDance ile bağlantılı değildir.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id),fmt=n=>(+n||0).toLocaleString(lang==='en'?'en-US':'tr-TR');
+const get=(o,p)=>p.split('.').reduce((a,k)=>a&&a[k],o);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const WD=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+const st=(t,v)=>`<div class="st"><b>${v}</b><span>${t}</span></div>`;
+const D=r=>typeof r.Date==='string'?r.Date:(typeof r.date==='string'?r.date:'');
+const L=(d,p)=>{const v=get(d,p);return Array.isArray(v)?v:[]};
+function tally(a,f){const o={};for(const r of a){const k=f(r);if(k!=null&&k!=='')o[k]=(o[k]||0)+1}return o}
+function bars(el,labels,vals){
+  const mx=Math.max(1,...vals);
+  el.innerHTML=labels.length?labels.map((l,i)=>`<div class="row"><span>${esc(l)}</span><div class="b" style="width:${Math.round(vals[i]/mx*58)+1}%"></div><span style="width:auto">${fmt(vals[i])}</span></div>`).join(''):'<p class="s">Veri yok.</p>';
+}
+function barObj(el,o,sortVal){const k=Object.keys(o);k.sort(sortVal?(a,b)=>o[b]-o[a]:undefined);bars(el,k.slice(0,8),k.slice(0,8).map(x=>o[x]))}
+const dn=k=>Date.UTC(+k.slice(0,4),+k.slice(5,7)-1,+k.slice(8,10))/864e5;
+const yrOf=v=>{if(v==null)return null;if(typeof v==='string'&&/^\d{4}-/.test(v))return v.slice(0,4);const n=+v;return n?String(new Date(n<1e12?n*1000:n).getUTCFullYear()):null};
+const topN=(o,n)=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,n);
+const ch2=a=>a.length?a.map(([k,v])=>`<span>${esc(k)}<em>${fmt(v)}</em></span>`).join(''):'<span>-</span>';
+const nlk=r=>Number(String(r.Likes==null?'':r.Likes).replace(/\D/g,''))||0;
+function barsW(el,o){
+  const k=Object.keys(o).sort((a,b)=>o[b]-o[a]).slice(0,8),m=Math.max(1,...k.map(x=>o[x]));
+  el.innerHTML=k.length?k.map(x=>`<div class="row w"><span>${esc(x)}</span><div class="b" style="width:${Math.round(o[x]/m*40)+1}%"></div><span style="width:auto">${fmt(o[x])}</span></div>`).join(''):'<p class="s">Veri yok.</p>';
+}
+$('sk').onchange=e=>$('sch').classList.toggle('hide',!e.target.checked);
+let PHURL=null,PH=null,card={};
+document.addEventListener('change',e=>{
+  if(e.target.id!=='ph')return;
+  const f=e.target.files[0];if(!f||!/^image\//.test(f.type))return;
+  if(PHURL)URL.revokeObjectURL(PHURL);
+  PHURL=URL.createObjectURL(f);PH=new Image();PH.src=PHURL;
+  const av=e.target.parentNode;av.style.backgroundImage=`url('${PHURL}')`;
+  if(av.firstChild&&av.firstChild.nodeType===3)av.firstChild.nodeValue='';
+});
+
+function analyze(data){
+  const R=L(data,'Your Activity.Reposts.RepostList');
+  if(!R.length)throw new Error('Repost listesi bulunamadı (Your Activity → Reposts). Doğru dosyayı seçtiğinden emin ol.');
+
+  // PROFİL (sadece herkese açık alanlar)
+  const PM=get(data,'Profile And Settings.Profile Info.ProfileMap')||{};
+  const F=L(data,'Profile And Settings.Follower.FansList'),G=L(data,'Profile And Settings.Following.Following');
+  const posts=L(data,'Post.Posts.VideoList');
+  const name=PM.userName||'';
+  $('prof').innerHTML=`<div class="prof"><label class="av"${PHURL?` style="background-image:url('${PHURL}')"`:''}>${PHURL?'':esc((name||'?')[0]).toUpperCase()}<input type="file" accept="image/*" id="ph"></label><div><b>@${esc(name)}</b><div>${esc(PM.displayName)}</div><small>${esc(PM.bioDescription)}</small><small style="opacity:.8">Fotoğraf eklemek için avatara dokun</small></div></div>`;
+  $('pst').innerHTML=st('takipçi',fmt(PM.followerCount||F.length))+st('takip edilen',fmt(PM.followingCount||G.length))+
+    st('alınan beğeni',PM.likesReceived?fmt(PM.likesReceived):'-')+st('paylaştığın video',fmt(posts.length))+
+    (PM.accountRegion?st('hesap bölgesi',esc(PM.accountRegion)):'');
+
+  // REPOST
+  const days={},hrs=Array(24).fill(0),wd=Array(7).fill(0),yrs={},ages=[];
+  for(const r of R){
+    const d=r.Date;if(typeof d!=='string')continue;
+    const k=d.slice(0,10);days[k]=(days[k]||0)+1;
+    hrs[+d.slice(11,13)||0]++;
+    wd[(new Date(k+'T00:00:00Z').getUTCDay()+6)%7]++;
+    yrs[k.slice(0,4)]=(yrs[k.slice(0,4)]||0)+1;
+    const m=r.Link&&r.Link.match(/video\/(\d+)/);
+    if(m){try{const a=(Date.parse(k+'T12:00:00Z')-Number(BigInt(m[1])>>32n)*1000)/864e5;if(a>=-1&&a<4000)ages.push(Math.max(0,a))}catch(e){}}
+  }
+  const ks=Object.keys(days).sort(),total=R.length;
+  let best=ks[0];for(const k of ks)if(days[k]>days[best])best=k;
+  let run=1,mx=1;
+  for(let i=1;i<ks.length;i++){run=dn(ks[i])-dn(ks[i-1])===1?run+1:1;if(run>mx)mx=run}
+  ages.sort((a,b)=>a-b);
+  const med=ages.length?ages[Math.floor(ages.length/2)]:null;
+  const wk=ages.length?Math.round(ages.filter(a=>a<=7).length/ages.length*100):null;
+  const W=L(data,'Your Activity.Watch History.VideoList');
+  $('cnt').textContent=fmt(total);
+  const sl=[st('ilk repost',ks[0]),st('son repost',ks[ks.length-1]),st('aktif gün',fmt(ks.length)),
+    st('aktif günde ortalama',fmt(Math.round(total/ks.length))),st('en yoğun gün',best+' ('+fmt(days[best])+')'),
+    st('en uzun seri',mx+' '+t('gün')),st('en yoğun saat',String(hrs.indexOf(Math.max(...hrs))).padStart(2,'0')+':00'),
+    st('en yoğun gün (hafta)',WD[wd.indexOf(Math.max(...wd))])];
+  if(med!==null)sl.push(st('orijinal videonun ortanca yaşı',Math.round(med)+' '+t('gün')),st('ilk 7 günde repostlananlar','%'+wk));
+  if(W.length)sl.push(st('kaç izlemede 1 repost',Math.round(W.length/total*10)/10));
+  $('stats').innerHTML=sl.join('');
+  barObj($('years'),yrs);bars($('wd'),WD,wd);
+  bars($('hr'),hrs.map((_,i)=>String(i).padStart(2,'0')),hrs);
+
+  // TAKİPÇİ
+  barObj($('fy'),tally(F,r=>D(r).slice(0,4)||null));
+  const fs=new Set(F.map(r=>String(r.UserName).toLowerCase()));
+  const nb=G.filter(r=>!fs.has(String(r.UserName).toLowerCase()));
+  $('nb').innerHTML=G.length?`Takip ettiklerinin <b>${G.length-nb.length}</b> tanesi seni geri takip ediyor.`+(nb.length?`<br><b>Geri takip etmeyenler:</b> ${nb.map(r=>'@'+esc(r.UserName)).join(', ')}`:''):'';
+
+  // İZLEME
+  if(W.length){
+    const wdays=new Set(W.map(r=>D(r).slice(0,10)));wdays.delete('');
+    const wh=tally(W,r=>D(r).slice(11,13)||null),th=Object.keys(wh).sort((a,b)=>wh[b]-wh[a])[0];
+    $('wst').innerHTML=st('izlenen video',fmt(W.length))+st('aktif gün',fmt(wdays.size))+st('günlük ortalama',fmt(Math.round(W.length/Math.max(1,wdays.size))))+st('en yoğun saat',th?th+':00':'-');
+    barObj($('wy'),tally(W,r=>D(r).slice(0,4)||null));
+  }else $('wst').innerHTML='<p class="s">İzleme geçmişi bulunamadı.</p>';
+
+  // AKTİVİTE (sadece adetler)
+  const sh=L(data,'Your Activity.Share History.ShareHistoryList');
+  const P=[['Beğeni (listedeki)','Likes and Favorites.Like List.ItemFavoriteList'],['Favori video','Likes and Favorites.Favorite Videos.FavoriteVideoList'],
+    ['Favori ses','Likes and Favorites.Favorite Sounds.FavoriteSoundList'],['Yorum','Comment.Comments.CommentsList'],
+    ['Paylaşım','Your Activity.Share History.ShareHistoryList'],['Arama','Your Activity.Searches.SearchList'],
+    ['Hashtag','Your Activity.Hashtag.HashtagList'],['Çıkartma','Your Activity.Stickers.StickerList'],['Favori koleksiyon','Likes and Favorites.Favorite Collection.FavoriteCollectionList'],['Profil görüntüleme','Profile And Settings.ProfileViews.ProfileViewList'],
+    ['Engellenen','Profile And Settings.Block List.BlockList']];
+  $('oth').innerHTML=P.map(([t,p])=>{const n=L(data,p).length;return n?st(t,fmt(n)):''}).join('');
+  barObj($('shm'),tally(sh,r=>typeof r.Method==='string'?r.Method:null),true);
+  {
+  // PAYLAŞILAN VİDEOLAR
+  if(posts.length){
+    let sum=0;const ws=Array(7).fill(0),wn=Array(7).fill(0),snd={},ds=[];
+    for(const q of posts){
+      const l=nlk(q);sum+=l;const d=D(q).slice(0,10);
+      if(d){ds.push(d);const w=(new Date(d+'T00:00:00Z').getUTCDay()+6)%7;ws[w]+=l;wn[w]++}
+      if(typeof q.Sound==='string'&&q.Sound)snd[q.Sound]=(snd[q.Sound]||0)+1;
+    }
+    ds.sort();
+    $('pv').innerHTML=st('paylaştığın video',fmt(posts.length))+st('toplam beğeni',fmt(sum))+st('video başına ortalama beğeni',fmt(Math.round(sum/posts.length)))+st('ilk paylaşım',ds[0]||'-')+st('son paylaşım',ds[ds.length-1]||'-');
+    $('ptop').innerHTML=posts.slice().sort((a,b)=>nlk(b)-nlk(a)).slice(0,5).map(q=>{
+      const u=/^https:\/\//.test(q.Link||'')?` <a href="${esc(q.Link)}" target="_blank" rel="noopener">↗</a>`:'';
+      return `<div class="bd"><i>❤️</i><div><b>${fmt(nlk(q))}</b><span>${esc(String(q.Title||D(q).slice(0,10)).slice(0,60))}${u}</span></div></div>`}).join('');
+    $('psd').innerHTML=ch2(topN(snd,5));
+    bars($('pwd'),WD,ws.map((v,i)=>wn[i]?Math.round(v/wn[i]):0));
+  }else{$('pv').innerHTML='<p class="s">Paylaştığın video bulunamadı.</p>';$('ptop').innerHTML='';$('psd').innerHTML='';$('pwd').innerHTML=''}
+
+  // CANLI YAYIN
+  const LM=get(data,'TikTok Live.Watch Live History.WatchLiveMap')||{},lk=Object.keys(LM);
+  if(lk.length){
+    let lc=0,lm=0;const ly={};
+    for(const id of lk){
+      const n=((LM[id]&&LM[id].Comments)||[]).length;lc+=n;if(n>lm)lm=n;
+      try{const y=new Date(Number(BigInt(id)>>32n)*1000).getUTCFullYear();if(y>2015&&y<2100)ly[y]=(ly[y]||0)+1}catch(e){}
+    }
+    $('lv').innerHTML=st('izlenen canlı yayın',fmt(lk.length))+st('canlıda yazdığın yorum',fmt(lc))+st('tek yayında en çok yorum',fmt(lm))+st('yayın başına ortalama yorum',(lc/lk.length).toFixed(1));
+    barObj($('ly'),ly);
+  }else{$('lv').innerHTML='<p class="s">Canlı yayın kaydı bulunamadı.</p>';$('ly').innerHTML=''}
+
+  // BAŞKA YERLERDEN TOPLANAN VERİ (sadece kaynak ve olay türü adetleri)
+  const OT=L(data,'Your Activity.Off TikTok Activity.OffTikTokActivityDataList');
+  if(OT.length){
+    const so=tally(OT,r=>typeof r.Source==='string'?r.Source:null),ev=tally(OT,r=>typeof r.Event==='string'?r.Event:null),oy=tally(OT,r=>yrOf(r.TimeStamp));
+    $('ot').innerHTML=st('toplam olay',fmt(OT.length))+st('farklı kaynak',fmt(Object.keys(so).length))+st('farklı olay türü',fmt(Object.keys(ev).length))+st('en çok olay gelen yıl',topN(oy,1).length?topN(oy,1)[0][0]:'-');
+    barsW($('os'),so);barsW($('oe'),ev);
+  }else{$('ot').innerHTML='<p class="s">Veri yok.</p>';$('os').innerHTML='';$('oe').innerHTML=''}
+
+  // ARAMA (varsayılan gizli)
+  const SL=L(data,'Your Activity.Searches.SearchList');
+  $('sch').innerHTML=ch2(topN(tally(SL,r=>typeof r.SearchTerm==='string'&&r.SearchTerm?r.SearchTerm.toLowerCase():null),10));
+
+  // İZLEME EKLERİ
+  if(W.length){
+    const dd=tally(W,r=>D(r).slice(0,10)||null),kk=Object.keys(dd).sort();
+    let bd=kk[0],r1=1,m1=1;
+    for(let i=0;i<kk.length;i++){
+      if(dd[kk[i]]>dd[bd])bd=kk[i];
+      if(i){r1=dn(kk[i])-dn(kk[i-1])===1?r1+1:1;if(r1>m1)m1=r1}
+    }
+    const a7=Array(7).fill(0),a24=Array(24).fill(0);
+    for(const r of W){const d=D(r);if(d.length<13)continue;a7[(new Date(d.slice(0,10)+'T00:00:00Z').getUTCDay()+6)%7]++;a24[+d.slice(11,13)||0]++}
+    $('wst').innerHTML+=st('en çok izlediğin gün',bd+' ('+fmt(dd[bd])+')')+st('en uzun izleme serisi',m1+' '+t('gün'));
+    bars($('ww'),WD,a7);bars($('wh'),a24.map((_,i)=>String(i).padStart(2,'0')),a24);
+  }
+  }
+  // YORUM ANALİZİ
+  const C=L(data,'Comment.Comments.CommentsList');
+  const stop=new Set('ve bir bu da de için ile çok ama daha gibi ben sen biz siz var yok mu mi mı mü ne ki ya en şu kadar bile her ise hem şey olan sadece değil bence tabi evet hayır the and you that this for are with was have not but all can your just like what out get its they his her she him them our has had who how from one very too more iki'.split(' '));
+  const wc={},ec={};let words=0,withText=0;
+  const emo=/\p{Extended_Pictographic}(?:\u200d\p{Extended_Pictographic}|\uFE0F)*/gu;
+  for(const r of C){
+    const q=typeof r.comment==='string'?r.comment:'';if(!q)continue;withText++;
+    for(const e of q.match(emo)||[])ec[e]=(ec[e]||0)+1;
+    const tk=q.replace(/https?:\S+|@\S+/g,' ').toLocaleLowerCase('tr').split(/[^\p{L}\p{N}']+/u).filter(Boolean);
+    words+=tk.length;
+    for(const w of tk)if(w.length>2&&!stop.has(w)&&!/^\d+$/.test(w))wc[w]=(wc[w]||0)+1;
+  }
+  const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const chip=a=>a.length?a.map(([k,v])=>`<span>${esc(k)}<em>${fmt(v)}</em></span>`).join(''):'<span>-</span>';
+  $('cst').innerHTML=withText?st('yorum',fmt(withText))+st('ortalama kelime',(words/withText).toFixed(1)):'<p class="s">Yorum bulunamadı.</p>';
+  $('cw').innerHTML=chip(top(wc));$('ce').innerHTML=chip(top(ec));
+  barObj($('cy'),tally(C,r=>D(r).slice(0,4)||null));
+
+  // ROZETLER
+  const per=[hrs.slice(0,6),hrs.slice(6,12),hrs.slice(12,18),hrs.slice(18)].map(a=>a.reduce((x,y)=>x+y,0));
+  const B=[[['🌙','Gece kuşu','Repostlarının çoğunu 00:00-06:00 arasında yapıyorsun'],['🌅','Sabahçı','Repostlarının çoğunu sabah 06:00-12:00 arasında yapıyorsun'],['☀️','Öğleci','Repostlarının çoğunu öğleden sonra yapıyorsun'],['🌆','Akşamcı','Repostlarının çoğunu akşam 18:00 sonrası yapıyorsun']][per.indexOf(Math.max(...per))]];
+  if((wd[5]+wd[6])/total>=.32)B.push(['🏖️','Hafta sonu savaşçısı','Repostlarının büyük kısmı hafta sonuna denk geliyor']);
+  if(mx>=30)B.push(['🔥','Seri canavarı','En az 30 gün art arda repost yaptın']);
+  if(days[best]>=200)B.push(['⚡','Maraton günü','Tek günde 200+ repost yaptığın bir gün var']);
+  B.push(total>=100000?['👑','Repost kralı','100.000+ repost']:total>=10000?['🚀','Repost ustası','10.000+ repost']:total>=1000?['⭐','Repost tutkunu','1.000+ repost']:['🌱','Yeni başlayan','Yolun başındasın']);
+  if(W.length&&W.length/total<5)B.push(['🔁','Paylaşım ruhlu','Her 5 izlemede en az 1 repost']);
+  if(withText>=1000)B.push(['💬','Yorum kralı','1.000+ yorum yazdın']);
+  if(posts.length<10)B.push(['🕵️','Gizli izleyici','Çok az video paylaşıyorsun']);
+  $('bdg').innerHTML=B.map(([e,ti,d])=>`<div class="bd"><i>${e}</i><div><b>${ti}</b><span>${d}</span></div></div>`).join('');
+  card={total,first:ks[0],last:ks[ks.length-1],best,bestN:days[best],run:mx,yrs,name,
+    stats:[total,W.length,withText,posts.length,Number(PM.followerCount)||F.length,Number(PM.followingCount)||G.length,days[best],mx,Object.keys(get(data,'TikTok Live.Watch Live History.WatchLiveMap')||{}).length,ks.length]};
+  if(CMP)renderCmp();
+  buildGal(days,ks,best);
+}
+
+let lang=(navigator.language||'tr').toLowerCase().startsWith('tr')?'tr':'en';
+try{lang=localStorage.getItem('lang')||lang}catch(e){}
+const t=s=>lang==='en'&&EN[s]||s;
+let DATA=null;
+const orig=new WeakMap();
+function tr(){
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){
+    const pn=n.parentNode;if(pn.tagName==='SCRIPT'||pn.id==='lang')continue;
+    const o=orig.has(n)?orig.get(n):n.nodeValue,c=o.trim(),e=lang==='en'&&c&&EN[c];
+    if(e){orig.set(n,o);n.nodeValue=o.replace(c,e)}else if(orig.has(n)){n.nodeValue=orig.get(n);orig.delete(n)}
+  }
+  document.documentElement.lang=lang;$('cn').placeholder=t('Takma ad (isteğe bağlı)');$('fc').placeholder=t('Arkadaşının kodunu buraya yapıştır');$('lang').textContent=lang==='en'?'TR':'EN';
+}
+$('lang').onclick=()=>{
+  lang=lang==='en'?'tr':'en';try{localStorage.setItem('lang',lang)}catch(e){}
+  if(DATA)analyze(DATA);tr();
+};
+
+async function readZip(file){
+  const bad=new Error('Bu ZIP doğrudan açılamadı. ZIP dosyasını açıp içindeki .json dosyasını seç');
+  const tail=await file.slice(Math.max(0,file.size-66000)).arrayBuffer(),v=new DataView(tail);let e=-1;
+  for(let i=tail.byteLength-22;i>=0;i--)if(v.getUint32(i,true)===0x06054b50){e=i;break}
+  if(e<0)throw new Error('Geçerli bir ZIP değil');
+  const n=v.getUint16(e+10,true),cdSize=v.getUint32(e+12,true),cdOff=v.getUint32(e+16,true);
+  if(cdOff===0xFFFFFFFF)throw bad;
+  const cd=new DataView(await file.slice(cdOff,cdOff+cdSize).arrayBuffer());
+  let p=0,best=null;
+  for(let i=0;i<n&&p+46<=cd.byteLength;i++){
+    if(cd.getUint32(p,true)!==0x02014b50)break;
+    const m=cd.getUint16(p+10,true),cs=cd.getUint32(p+20,true),us=cd.getUint32(p+24,true),nl=cd.getUint16(p+28,true),xl=cd.getUint16(p+30,true),cl=cd.getUint16(p+32,true),lo=cd.getUint32(p+42,true);
+    const name=new TextDecoder().decode(new Uint8Array(cd.buffer,cd.byteOffset+p+46,nl));
+    if(/\.json$/i.test(name)&&(!best||us>best.us))best={m,cs,us,lo};
+    p+=46+nl+xl+cl;
+  }
+  if(!best)throw new Error('ZIP içinde .json dosyası bulunamadı');
+  if(best.cs===0xFFFFFFFF||best.us===0xFFFFFFFF||best.lo===0xFFFFFFFF||(best.m!==0&&best.m!==8))throw bad;
+  const lh=new DataView(await file.slice(best.lo,best.lo+30).arrayBuffer());
+  const off=best.lo+30+lh.getUint16(26,true)+lh.getUint16(28,true),blob=file.slice(off,off+best.cs);
+  if(best.m===0)return blob.text();
+  if(typeof DecompressionStream==='undefined')throw bad;
+  return new Response(blob.stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+}
+async function readFile(file){
+  const h=new Uint8Array(await file.slice(0,2).arrayBuffer());
+  return h[0]===0x50&&h[1]===0x4b?readZip(file):file.text();
+}
+$('f').onchange=async e=>{
+  const file=e.target.files[0];if(!file)return;
+  $('err').textContent=t('Okunuyor, büyük dosyalarda biraz sürebilir...');$('res').classList.add('hide');
+  try{
+    DATA=JSON.parse(await readFile(file));
+    analyze(DATA);tr();
+    $('err').textContent='';$('intro').classList.add('hide');$('res').classList.remove('hide');$('res').scrollIntoView();
+  }catch(ex){DATA=null;$('err').textContent=t('Hata:')+' '+t(ex.message)}
+};
+
+const EN={
+"TikTok verinin":"Discover the story","hikayesini keşfet":"of your TikTok data",
+"İndirdiğin TikTok veri dosyasını yükle, repost, izleme ve takipçi istatistiklerini saniyeler içinde gör.":"Upload your TikTok data file and see your repost, watch and follower stats in seconds.",
+"🔒 Tarayıcında çalışır":"🔒 Runs in your browser","🚫 Giriş / şifre yok":"🚫 No login / password","📡 Sunucuya gönderilmez":"📡 Never sent to a server",
+"📂 ZIP veya JSON dosyanı seç":"📂 Choose your ZIP or JSON file","TikTok'tan indirdiğin .zip veya .json dosyası":"The .zip or .json file you downloaded from TikTok",
+"Nasıl yapılır?":"How it works","TikTok → Ayarlar → Hesap →":"TikTok → Settings → Account →","Verilerini indir":"Download your data",
+"Biçim olarak":"Choose","seç, hazır olunca indir (birkaç gün sürebilir)":"as the format, then download it when ready (can take a few days)",
+"İndirdiğin":"Select the downloaded","dosyasını açmadan yukarıdan seç":"file above, no need to unzip it",
+"Neden güvenli?":"Why is it safe?",
+"✅ Dosya cihazından çıkmaz, hiçbir sunucuya gönderilmez":"✅ Your file never leaves your device and is never uploaded",
+"✅ Doğrula: internetini kapat, site yine çalışır":"✅ Verify it: turn off your internet, the site still works",
+"✅ Mesajlarına, giriş IP'lerine, e-posta, telefon, adres, doğum tarihi ve cihaz kimliklerine dokunmaz":"✅ It never touches your messages, login IPs, email, phone, address, birth date or device IDs",
+"✅ Hesabına giriş yapmaz, şifre istemez":"✅ It never logs in to your account or asks for a password","✅ Çerez, takip veya reklam yok":"✅ No cookies, tracking or ads",
+"Profil":"Profile","repost":"reposts","Rozetlerin":"Your badges",
+"takipçi":"followers","takip edilen":"following","alınan beğeni":"likes received","paylaştığın video":"videos posted","hesap bölgesi":"account region",
+"ilk repost":"first repost","son repost":"last repost","aktif gün":"active days","aktif günde ortalama":"average per active day","en yoğun gün":"busiest day",
+"en uzun seri":"longest streak","en yoğun saat":"busiest hour","en yoğun gün (hafta)":"busiest weekday","orijinal videonun ortanca yaşı":"median age of the original video",
+"ilk 7 günde repostlananlar":"reposted within 7 days","kaç izlemede 1 repost":"watches per repost","izlenen video":"videos watched","günlük ortalama":"daily average",
+"Repost: yıllara göre":"Reposts by year","Repost: haftanın günleri":"Reposts by weekday","Repost: saatler":"Reposts by hour","Takipçi büyümesi (yıl)":"Follower growth (by year)",
+"İzleme":"Watching","Aktivite özeti":"Activity summary","Paylaşım yöntemleri":"Sharing methods","Okunmayan bölümler":"Sections never read",
+"Mesajlar, giriş geçmişi (IP), e-posta, telefon, adres, doğum tarihi, cihaz kimlikleri, satın alımlar ve reklam verisine bu site hiç bakmaz.":"This site never looks at messages, login history (IP), email, phone, address, birth date, device IDs, purchases or ad data.",
+"Pzt":"Mon","Sal":"Tue","Çar":"Wed","Per":"Thu","Cum":"Fri","Cmt":"Sat","Paz":"Sun",
+"Beğeni (listedeki)":"Likes (in list)","Favori video":"Favorite videos","Favori ses":"Favorite sounds","Yorum":"Comments","Paylaşım":"Shares","Arama":"Searches","Hashtag":"Hashtags","Profil görüntüleme":"Profile views","Engellenen":"Blocked",
+"Yorum analizi":"Comment analysis","yorum":"comments","ortalama kelime":"avg. words per comment","En çok kullandığın kelimeler":"Your most used words","En çok kullandığın emojiler":"Your most used emojis","Yorumlar: yıllara göre":"Comments by year","Yorum bulunamadı.":"No comments found.",
+"Veri yok.":"No data.",
+"Paylaştığın videolar":"Your posted videos","En çok beğenilenler":"Most liked","En çok kullandığın sesler":"Your most used sounds","Beğeniye göre haftanın günü (ortalama)":"Average likes by weekday",
+"toplam beğeni":"total likes","video başına ortalama beğeni":"avg. likes per video","ilk paylaşım":"first post","son paylaşım":"latest post","Paylaştığın video bulunamadı.":"No posted videos found.",
+"izlenen canlı yayın":"live streams watched","canlıda yazdığın yorum":"live comments you wrote","tek yayında en çok yorum":"most comments in one stream","yayın başına ortalama yorum":"avg. comments per stream","Canlı yayın kaydı bulunamadı.":"No live stream records found.",
+"TikTok'un başka yerlerden topladığı veri":"Data TikTok collected from other places","Başka uygulama ve sitelerin TikTok'a ilettiği olaylar.":"Events that other apps and sites sent to TikTok.",
+"toplam olay":"total events","farklı kaynak":"different sources","farklı olay türü":"different event types","en çok olay gelen yıl":"year with most events","En çok olay gelen kaynaklar":"Top sources","Olay türleri":"Event types",
+"Arama geçmişimi göster (kişisel)":"Show my search history (personal)",
+"İzleme: haftanın günleri":"Watching by weekday","İzleme: saatler":"Watching by hour","en çok izlediğin gün":"most watched day","en uzun izleme serisi":"longest watch streak",
+"Çıkartma":"Stickers","Favori koleksiyon":"Favorite collections","İzleme geçmişi bulunamadı.":"No watch history found.",
+"Takip ettiklerinin":"Of the people you follow,","tanesi seni geri takip ediyor.":"follow you back.","Geri takip etmeyenler:":"Not following back:",
+"Kullanıcı adımı ve fotoğrafımı karta ekle":"Add my username and photo to the card","Fotoğraf eklemek için avatara dokun":"Tap the avatar to add a photo","Paylaşım kartını indir (PNG)":"Download share card (PNG)",
+"Gizlilik ve çerezler":"Privacy and cookies",
+"Repost Galaksin ✨":"Your Repost Galaxy ✨","Her yıl bir halka, her yıldız bir repost günü. Parlak yıldızlar yoğun günler.":"Each year is a ring and each star is a day with reposts. Brighter stars are busier days.",
+"▶ Yolculuğu oynat":"▶ Play the journey","⏸ Durdur":"⏸ Pause","Galaksiyi indir (PNG)":"Download galaxy (PNG)","Repost galaksim":"My repost galaxy","☕ Destek ol · 2 ₺":"☕ Support · ₺2","Destek bağlantısı yakında eklenecek.":"The support link will be added soon.",
+"Arkadaşınla karşılaştır":"Compare with a friend",
+"Sunucu yok: sonuçlarından kısa bir kod üretirsin, arkadaşın kendi sitesinde yapıştırır. Kodda sadece toplam sayılar ve yazdığın takma ad olur, kullanıcı adın, link ya da içerik olmaz.":"No server: you generate a short code from your results and your friend pastes it into their own copy. The code holds only totals and the nickname you type, never your username, links or content.",
+"Kodumu oluştur":"Create my code","Kopyala":"Copy","Kopyalandı":"Copied","Paylaş":"Share","Arkadaşının kodu":"Your friend's code","Karşılaştır":"Compare",
+"Sen":"You","Arkadaşın":"Friend","kazanılan kategori":"categories won",
+"en çok repost (tek gün)":"most reposts in one day","en uzun seri (gün)":"longest streak (days)","aktif repost günü":"active repost days",
+"Kod geçersiz. Arkadaşından kodu tekrar iste.":"Invalid code. Ask your friend for the code again.",
+"Takma ad (isteğe bağlı)":"Nickname (optional)","Arkadaşının kodunu buraya yapıştır":"Paste your friend's code here",
+"Bu site çerez, analitik, reklam veya takip aracı kullanmaz. Seçtiğin dosya yalnızca tarayıcının belleğinde işlenir; yüklenmez, kaydedilmez, sekmeyi kapatınca sonuçlar silinir. Tarayıcında sadece dil tercihin saklanır.":"This site uses no cookies, analytics, ads or trackers. Your file is processed only in your browser's memory; it is not uploaded or saved, and results disappear when you close the tab. Only your language choice is stored in your browser.",
+"Siteyi barındıran servis (ör. GitHub Pages, Netlify) standart teknik ziyaret kayıtları tutabilir, bu bizim kontrolümüzde değildir. Yorum kelimeleri paylaşım kartına girmez, kullanıcı adın sadece sen işaretlersen girer.":"The hosting service (e.g. GitHub Pages, Netlify) may keep standard technical visit logs, which we do not control. Comment words never appear on the share card, and your username is added only if you tick the box.",
+"TikTok, ilgili hak sahiplerinin markasıdır. Bu site TikTok veya ByteDance ile bağlantılı değildir, onlar tarafından onaylanmamıştır.":"TikTok is a trademark of its respective owners. This site is not affiliated with or endorsed by TikTok or ByteDance.",
+"TikTok veya ByteDance ile bağlantılı değildir.":"Not affiliated with TikTok or ByteDance.",
+"Gece kuşu":"Night owl","Repostlarının çoğunu 00:00-06:00 arasında yapıyorsun":"You do most of your reposting between 12 AM and 6 AM",
+"Sabahçı":"Early bird","Repostlarının çoğunu sabah 06:00-12:00 arasında yapıyorsun":"You do most of your reposting between 6 AM and 12 PM",
+"Öğleci":"Afternoon crew","Repostlarının çoğunu öğleden sonra yapıyorsun":"You do most of your reposting in the afternoon",
+"Akşamcı":"Evening person","Repostlarının çoğunu akşam 18:00 sonrası yapıyorsun":"You do most of your reposting after 6 PM",
+"Hafta sonu savaşçısı":"Weekend warrior","Repostlarının büyük kısmı hafta sonuna denk geliyor":"A big share of your reposts happen on weekends",
+"Seri canavarı":"Streak monster","En az 30 gün art arda repost yaptın":"You reposted for at least 30 days in a row",
+"Maraton günü":"Marathon day","Tek günde 200+ repost yaptığın bir gün var":"You have a day with 200+ reposts",
+"Repost kralı":"Repost royalty","100.000+ repost":"100,000+ reposts","Repost ustası":"Repost master","10.000+ repost":"10,000+ reposts",
+"Repost tutkunu":"Repost fan","1.000+ repost":"1,000+ reposts","Yeni başlayan":"Newcomer","Yolun başındasın":"You're just getting started",
+"Paylaşım ruhlu":"Sharer at heart","Her 5 izlemede en az 1 repost":"At least 1 repost for every 5 videos you watch",
+"Yorum kralı":"Comment champ","1.000+ yorum yazdın":"You wrote 1,000+ comments","Gizli izleyici":"Silent watcher","Çok az video paylaşıyorsun":"You rarely post videos",
+"gün":"days","Toplam repostum":"My total reposts","En yoğun gün:":"Busiest day:","En uzun seri:":"Longest streak:","TikTok ile bağlantılı değildir":"Not affiliated with TikTok",
+"Okunuyor, büyük dosyalarda biraz sürebilir...":"Reading, this may take a moment for large files...","Hata:":"Error:",
+"Repost listesi bulunamadı (Your Activity → Reposts). Doğru dosyayı seçtiğinden emin ol.":"Repost list not found (Your Activity → Reposts). Make sure you picked the right file.",
+"Geçerli bir ZIP değil":"Not a valid ZIP file","ZIP içinde .json dosyası bulunamadı":"No .json file found inside the ZIP",
+"Bu ZIP doğrudan açılamadı. ZIP dosyasını açıp içindeki .json dosyasını seç":"This ZIP could not be opened directly. Unzip it and choose the .json file inside"
+};
+tr();
+
+let GAL=null,gp=1,gRaf=0;
+function buildGal(days,ks,best){
+  const d0=dn(ks[0]),N=dn(ks[ks.length-1])-d0+1,mxc=Math.max(...Object.values(days)),q=N>1?N-1:1;
+  const st=ks.map(k=>{
+    const n=dn(k),i=n-d0,y=+k.slice(0,4),a=(n-dn(y+'-01-01'))/365*Math.PI*2-Math.PI/2,r=80+i/q*260,c=days[k],f=Math.sqrt(c/mxc);
+    return {i,c,x:360+r*Math.cos(a),y:360+r*Math.sin(a),s:.8+f*3.2,h:330-i/q*150,al:.35+.65*f,b:k===best};
+  });
+  const ylab=[];
+  for(let y=+ks[0].slice(0,4)+1;y<=+ks[ks.length-1].slice(0,4);y++){const i=dn(y+'-01-01')-d0;if(i>0)ylab.push({y,i,r:80+i/q*260})}
+  GAL={st,N,d0,ylab,first:ks[0],last:ks[ks.length-1],bestN:days[best]};
+  gp=1;$('gs').value=1000;draw(1);
+}
+function draw(p){
+  if(!GAL)return;
+  const x=$('gal').getContext('2d'),cx=360;
+  const bg=x.createRadialGradient(cx,cx,0,cx,cx,420);bg.addColorStop(0,'#2b1745');bg.addColorStop(.55,'#0e0b20');bg.addColorStop(1,'#04040a');
+  x.globalCompositeOperation='source-over';x.globalAlpha=1;x.fillStyle=bg;x.fillRect(0,0,720,720);
+  let sd=7;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296};
+  x.fillStyle='#fff';
+  for(let i=0;i<130;i++){x.globalAlpha=.1+rnd()*.35;x.fillRect(rnd()*720,rnd()*720,1.3,1.3)}
+  x.globalAlpha=1;
+  const up=Math.floor(p*(GAL.N-1));let cum=0,bs=null;
+  x.fillStyle='rgba(255,255,255,.55)';x.font='13px system-ui,sans-serif';x.textAlign='center';
+  for(const y of GAL.ylab)if(y.i<=up)x.fillText(y.y,cx+16,cx-y.r+4);
+  x.globalCompositeOperation='lighter';
+  for(const s of GAL.st){
+    if(s.i>up)break;cum+=s.c;
+    x.fillStyle=`hsla(${s.h},95%,62%,${s.al*.22})`;x.beginPath();x.arc(s.x,s.y,s.s*2.8,0,7);x.fill();
+    x.fillStyle=`hsla(${s.h},95%,72%,${s.al})`;x.beginPath();x.arc(s.x,s.y,s.s,0,7);x.fill();
+    if(s.b)bs=s;
+  }
+  x.globalCompositeOperation='source-over';
+  if(bs){x.strokeStyle='#ffd54a';x.lineWidth=2;x.beginPath();x.arc(bs.x,bs.y,bs.s+7,0,7);x.stroke();
+    x.fillStyle='#ffd54a';x.font='bold 15px system-ui,sans-serif';x.fillText('★ '+fmt(GAL.bestN),bs.x,bs.y-bs.s-13)}
+  const cg=x.createRadialGradient(cx,cx,0,cx,cx,70);cg.addColorStop(0,'rgba(255,255,255,.2)');cg.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=cg;x.fillRect(cx-70,cx-70,140,140);
+  x.fillStyle='#fff';x.font='bold 26px system-ui,sans-serif';x.fillText(fmt(cum),cx,cx+4);
+  x.fillStyle='rgba(255,255,255,.7)';x.font='13px system-ui,sans-serif';
+  x.fillText(new Date((GAL.d0+up)*864e5).toISOString().slice(0,10),cx,cx+26);
+  x.font='15px system-ui,sans-serif';x.fillText(t('Repost galaksim')+' · '+GAL.first+' → '+GAL.last,cx,700);
+}
+function gStop(){if(gRaf){cancelAnimationFrame(gRaf);gRaf=0}$('gp').textContent=t('▶ Yolculuğu oynat')}
+$('gp').onclick=()=>{
+  if(!GAL)return;
+  if(gRaf){gStop();return}
+  const t0=performance.now(),from=gp>=1?0:gp;
+  $('gp').textContent=t('⏸ Durdur');
+  const step=now=>{
+    gp=Math.min(1,from+(now-t0)/14000);$('gs').value=Math.round(gp*1000);draw(gp);
+    if(gp<1)gRaf=requestAnimationFrame(step);else gStop();
+  };
+  gRaf=requestAnimationFrame(step);
+};
+$('gs').oninput=e=>{gStop();gp=e.target.value/1000;draw(gp)};
+$('gd').onclick=()=>$('gal').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='repost-galaksim.png';a.click()});
+
+// Ödeme/bağış sayfanın linkini buraya yaz (örn. 'https://...'). Boşsa buton "yakında" uyarısı gösterir.
+const SUPPORT_URL='';
+if(SUPPORT_URL)$('sup').href=SUPPORT_URL;
+else $('sup').onclick=e=>{e.preventDefault();alert(t('Destek bağlantısı yakında eklenecek.'))};
+let CMP=null;
+const MK=['repost','izlenen video','yorum','paylaştığın video','takipçi','takip edilen','en çok repost (tek gün)','en uzun seri (gün)','izlenen canlı yayın','aktif repost günü'];
+const b64=q=>btoa(String.fromCharCode(...new TextEncoder().encode(q))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const unb64=q=>new TextDecoder().decode(Uint8Array.from(atob(q.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0)));
+function renderCmp(){
+  if(!CMP||!card.stats)return;
+  const a=card.stats,b=CMP.s,na=($('cn').value.trim()||t('Sen')).slice(0,16),nb2=CMP.n||t('Arkadaşın');
+  let wa=0,wb=0;
+  const rows=MK.map((l,i)=>{
+    const x=a[i],y=b[i],m=Math.max(1,x,y);if(x>y)wa++;else if(y>x)wb++;
+    const r=(n,v,w)=>`<div class="r${w?' win':''}"><span>${esc(n)}</span><div style="width:${Math.round(v/m*55)+1}%"></div><b>${fmt(v)}</b></div>`;
+    return `<div class="cm"><small>${l}</small>${r(na,x,x>y)}${r(nb2,y,y>x)}</div>`;
+  }).join('');
+  $('cr').innerHTML=`<div class="st" style="margin:10px 0"><b>${esc(na)} ${wa} - ${wb} ${esc(nb2)}</b><span>kazanılan kategori</span></div>`+rows;
+  tr();
+}
+$('mk').onclick=()=>{
+  if(!card.stats)return;
+  $('mine').value='TKA1.'+b64(JSON.stringify({n:$('cn').value.trim().slice(0,16),s:card.stats}));
+  $('mw').classList.remove('hide');$('mine').select();
+};
+$('cp').onclick=()=>{
+  const v=$('mine').value;
+  (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).catch(()=>{$('mine').select();document.execCommand('copy')});
+  $('cp').textContent=t('Kopyalandı');setTimeout(()=>{$('cp').textContent=t('Kopyala')},1500);
+};
+if(!navigator.share)$('sh2').classList.add('hide');
+$('sh2').onclick=()=>{navigator.share({text:$('mine').value}).catch(()=>{})};
+$('go').onclick=()=>{
+  $('ce').textContent='';
+  try{
+    const c=$('fc').value.replace(/\s+/g,'');
+    if(!c.startsWith('TKA1.'))throw 0;
+    const o=JSON.parse(unb64(c.slice(5)));
+    if(!Array.isArray(o.s)||o.s.length!==10||o.s.some(v=>!Number.isFinite(v)||v<0||v>1e12))throw 0;
+    CMP={n:typeof o.n==='string'?o.n.slice(0,16):'',s:o.s};renderCmp();
+  }catch(e){CMP=null;$('cr').innerHTML='';$('ce').textContent=t('Kod geçersiz. Arkadaşından kodu tekrar iste.')}
+};
+
+$('share').onclick=()=>{
+  const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#fe2c55');g.addColorStop(1,'#14141c');
+  x.fillStyle=g;x.fillRect(0,0,1080,1350);x.fillStyle='#fff';x.textAlign='center';
+  const f='system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+  if($('un').checked&&card.name){
+    let ty=190;
+    if(PH&&PH.complete&&PH.naturalWidth){
+      x.save();x.beginPath();x.arc(540,110,60,0,7);x.clip();
+      const q=Math.min(PH.naturalWidth,PH.naturalHeight);
+      x.drawImage(PH,(PH.naturalWidth-q)/2,(PH.naturalHeight-q)/2,q,q,480,50,120,120);x.restore();ty=235;
+    }
+    x.font='bold 50px '+f;x.fillText('@'+card.name,540,ty);
+  }
+  x.font='bold 54px '+f;x.fillText(t('Toplam repostum'),540,310);
+  x.font='bold 200px '+f;x.fillText(fmt(card.total),540,570);
+  x.font='44px '+f;
+  x.fillText(card.first+' → '+card.last,540,690);
+  x.fillText(t('En yoğun gün:')+' '+fmt(card.bestN)+' '+t('repost'),540,810);
+  x.fillText(t('En uzun seri:')+' '+card.run+' '+t('gün'),540,890);
+  const yk=Object.keys(card.yrs).sort();
+  x.font='bold 38px '+f;x.fillText(yk.map(y=>y+': '+fmt(card.yrs[y])).join('   ').slice(0,64),540,1020);
+  x.globalAlpha=.7;x.font='32px '+f;x.fillText(t('TikTok ile bağlantılı değildir'),540,1260);
+  c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='repost-kartim.png';a.click()});
+};
+</script>
+</body>
+</html>
