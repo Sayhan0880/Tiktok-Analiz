@@ -85,8 +85,9 @@ button.ghost{background:var(--card);color:var(--fg)}
 <div id="intro">
   <div class="card"><h2>Nasıl yapılır?</h2><ol>
     <li>TikTok → Ayarlar → Hesap → <b>Verilerini indir</b></li>
-    <li>Biçim olarak <b>JSON</b> seç, hazır olunca indir (birkaç saat sürebilir)</li>
-    <li>İndirdiğin <b>ZIP</b> dosyasını açmadan yukarıdan seç</li></ol></div>
+    <li>Biçim olarak <b>JSON</b> seç, hazır olunca indir (birkaç gün sürebilir)</li>
+    <li>İndirdiğin <b>ZIP</b> dosyasını açmadan yukarıdan seç</li></ol>
+    <p class="s" style="margin:10px 0 0"><a href="rehber.html" style="color:var(--acc)">Ayrıntılı rehber (Türkçe) →</a></p></div>
   <div class="card"><h2>Neden güvenli?</h2><ul class="ok">
     <li>✅ Dosya cihazından çıkmaz, hiçbir sunucuya gönderilmez</li>
     <li>✅ Doğrula: internetini kapat, site yine çalışır</li>
@@ -397,7 +398,7 @@ const EN={
 "🔒 Tarayıcında çalışır":"🔒 Runs in your browser","🚫 Giriş / şifre yok":"🚫 No login / password","📡 Sunucuya gönderilmez":"📡 Never sent to a server",
 "📂 ZIP veya JSON dosyanı seç":"📂 Choose your ZIP or JSON file","TikTok'tan indirdiğin .zip veya .json dosyası":"The .zip or .json file you downloaded from TikTok",
 "Nasıl yapılır?":"How it works","TikTok → Ayarlar → Hesap →":"TikTok → Settings → Account →","Verilerini indir":"Download your data",
-"Biçim olarak":"Choose","seç, hazır olunca indir (birkaç saat sürebilir)":"as the format, then download it when ready (can take a few days)",
+"Biçim olarak":"Choose","seç, hazır olunca indir (birkaç gün sürebilir)":"as the format, then download it when ready (can take a few days)",
 "İndirdiğin":"Select the downloaded","dosyasını açmadan yukarıdan seç":"file above, no need to unzip it",
 "Neden güvenli?":"Why is it safe?",
 "✅ Dosya cihazından çıkmaz, hiçbir sunucuya gönderilmez":"✅ Your file never leaves your device and is never uploaded",
@@ -426,7 +427,7 @@ const EN={
 "Çıkartma":"Stickers","Favori koleksiyon":"Favorite collections","İzleme geçmişi bulunamadı.":"No watch history found.",
 "Takip ettiklerinin":"Of the people you follow,","tanesi seni geri takip ediyor.":"follow you back.","Geri takip etmeyenler:":"Not following back:",
 "Kullanıcı adımı ve fotoğrafımı karta ekle":"Add my username and photo to the card","Fotoğraf eklemek için avatara dokun":"Tap the avatar to add a photo","Paylaşım kartını indir (PNG)":"Download share card (PNG)",
-"Gizlilik ve çerezler":"Privacy and cookies",
+"Gizlilik ve çerezler":"Privacy and cookies","Ayrıntılı rehber (Türkçe) →":"Detailed guide (Turkish) →",
 "🎬 Demo modu":"🎬 Demo mode","Dosyan yok mu? Örnek verilerle dene":"No file yet? Try it with sample data","Demo modu":"Demo mode","Kendi dosyan hazır değilse siteyi örnek verilerle deneyebilirsin.":"If your own file is not ready, you can try the site with sample data.","Ne gösterir?":"What does it show?","Uydurma bir hesabın verileriyle sitenin tüm bölümlerini: profil, repost istatistikleri, galaksi, rozetler, yorum analizi ve daha fazlası.":"Every section of the site using a made-up account: profile, repost stats, galaxy, badges, comment analysis and more.","Veriler gerçek mi?":"Is the data real?","Hayır. Hepsi bu sayfada rastgele üretilir, gerçek bir kişi ya da hesapla ilgisi yok.":"No. It is all generated randomly on this page and has nothing to do with any real person or account.","Gizlilik":"Privacy","Dosya yüklemene, internete ya da hesabına gerek yok. Hiçbir şey bir yere gönderilmez.":"No file, internet connection or account is needed. Nothing is sent anywhere.","Sonra ne olur?":"What happens next?","Kendi dosyanı yüklediğin anda demo kapanır ve kendi sonuçların görünür. Demo sonuçlarıyla arkadaş kodu oluşturulamaz, paylaşım kartında \"ÖRNEK VERİ\" yazar.":"As soon as you upload your own file, the demo closes and your own results appear. Friend codes cannot be created from demo results, and the share card says \"SAMPLE DATA\".","Kendi verini nasıl alırsın?":"How do you get your own data?","TikTok → Ayarlar → Hesap → Verilerini indir, biçim olarak JSON seç.":"TikTok → Settings → Account → Download your data, and choose JSON as the format.","▶ Demoyu başlat":"▶ Start the demo","Kapat":"Close","🎬 Demo modu: örnek veriler gösteriliyor":"🎬 Demo mode: showing sample data","Demodan çık":"Exit demo","Demo verisiyle kod oluşturulamaz.":"Codes cannot be created from demo data.","ÖRNEK VERİ":"SAMPLE DATA",
 "Repost Galaksin ✨":"Your Repost Galaxy ✨","Her yıl bir halka, her yıldız bir repost günü. Parlak yıldızlar yoğun günler.":"Each year is a ring and each star is a day with reposts. Brighter stars are busier days.",
 "▶ Yolculuğu oynat":"▶ Play the journey","⏸ Durdur":"⏸ Pause","Galaksiyi indir (PNG)":"Download galaxy (PNG)","Repost galaksim":"My repost galaxy","☕ Destek ol · 2 ₺":"☕ Support · ₺2","Destek bağlantısı yakında eklenecek.":"The support link will be added soon.",
@@ -465,7 +466,7 @@ function buildGal(days,ks,best){
   const d0=dn(ks[0]),N=dn(ks[ks.length-1])-d0+1,mxc=Math.max(...Object.values(days)),q=N>1?N-1:1;
   const st=ks.map(k=>{
     const n=dn(k),i=n-d0,y=+k.slice(0,4),a=(n-dn(y+'-01-01'))/365*Math.PI*2-Math.PI/2,r=80+i/q*260,c=days[k],f=Math.sqrt(c/mxc);
-    return {i,c,x:360+r*Math.cos(a),y:360+r*Math.sin(a),s:.8+f*3.2,h:330-i/q*150,al:.35+.65*f,b:k===best};
+    return {i,c,x:360+r*Math.cos(a),y:360+r*Math.sin(a),s:.8+f*3.2,c3:[Math.round(255-120*i/q),Math.round(213-118*i/q),Math.round(74+181*i/q)],al:.35+.65*f,b:k===best};
   });
   const ylab=[];
   for(let y=+ks[0].slice(0,4)+1;y<=+ks[ks.length-1].slice(0,4);y++){const i=dn(y+'-01-01')-d0;if(i>0)ylab.push({y,i,r:80+i/q*260})}
@@ -487,8 +488,8 @@ function draw(p){
   x.globalCompositeOperation='lighter';
   for(const s of GAL.st){
     if(s.i>up)break;cum+=s.c;
-    x.fillStyle=`hsla(${s.h},95%,62%,${s.al*.22})`;x.beginPath();x.arc(s.x,s.y,s.s*2.8,0,7);x.fill();
-    x.fillStyle=`hsla(${s.h},95%,72%,${s.al})`;x.beginPath();x.arc(s.x,s.y,s.s,0,7);x.fill();
+    x.fillStyle=`rgba(${s.c3},${s.al*.22})`;x.beginPath();x.arc(s.x,s.y,s.s*2.8,0,7);x.fill();
+    x.fillStyle=`rgba(${s.c3},${s.al})`;x.beginPath();x.arc(s.x,s.y,s.s,0,7);x.fill();
     if(s.b)bs=s;
   }
   x.globalCompositeOperation='source-over';
@@ -499,6 +500,7 @@ function draw(p){
   x.fillStyle='#fff';x.font='bold 26px system-ui,sans-serif';x.fillText(fmt(cum),cx,cx+4);
   x.fillStyle='rgba(255,255,255,.7)';x.font='13px system-ui,sans-serif';
   x.fillText(new Date((GAL.d0+up)*864e5).toISOString().slice(0,10),cx,cx+26);
+  x.font='bold 18px system-ui,sans-serif';x.fillStyle='rgba(255,255,255,.8)';x.fillText('Repostar'+(SITE_URL?' · '+SITE_URL:''),cx,32);
   x.font='15px system-ui,sans-serif';x.fillText(t('Repost galaksim')+' · '+GAL.first+' → '+GAL.last+(DEMO?' · DEMO':''),cx,700);
 }
 function gStop(){if(gRaf){cancelAnimationFrame(gRaf);gRaf=0}$('gp').textContent=t('▶ Yolculuğu oynat')}
@@ -572,6 +574,8 @@ $('dx').onclick=()=>{
 
 // Ödeme/bağış sayfanın linkini buraya yaz (örn. 'https://...'). Boşsa buton "yakında" uyarısı gösterir.
 const SUPPORT_URL='';
+// Siteyi yayınlayınca adresini buraya yaz (örn. 'repostar.vercel.app'); paylaşım kartına ve galaksi posterine eklenir.
+const SITE_URL='';tiktokanaliz.vercel.app
 if(SUPPORT_URL)$('sup').href=SUPPORT_URL;
 else $('sup').onclick=e=>{e.preventDefault();alert(t('Destek bağlantısı yakında eklenecek.'))};
 let CMP=null;
@@ -616,7 +620,7 @@ $('go').onclick=()=>{
 
 $('share').onclick=()=>{
   const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#fe2c55');g.addColorStop(1,'#14141c');
+  const g=x.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#7c4dff');g.addColorStop(1,'#0c0922');
   x.fillStyle=g;x.fillRect(0,0,1080,1350);x.fillStyle='#fff';x.textAlign='center';
   const f='system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
   if($('un').checked&&card.name){
@@ -636,7 +640,14 @@ $('share').onclick=()=>{
   x.fillText(t('En uzun seri:')+' '+card.run+' '+t('gün'),540,890);
   const yk=Object.keys(card.yrs).sort();
   x.font='bold 38px '+f;x.fillText(yk.map(y=>y+': '+fmt(card.yrs[y])).join('   ').slice(0,64),540,1020);
-  x.globalAlpha=.7;x.font='32px '+f;x.fillText(t('TikTok ile bağlantılı değildir'),540,1260);if(DEMO){x.globalAlpha=1;x.font='bold 56px '+f;x.fillText(t('ÖRNEK VERİ'),540,1170)};
+  x.globalAlpha=.7;x.font='32px '+f;x.fillText(t('TikTok ile bağlantılı değildir'),540,1315);
+  x.globalAlpha=1;
+  if(DEMO){x.font='bold 46px '+f;x.fillText(t('ÖRNEK VERİ'),540,1112)}
+  x.font='bold 60px '+f;x.textAlign='left';
+  const w1=x.measureText('Repo').width,w2=x.measureText('star').width,bx=540-(w1+w2)/2;
+  x.fillStyle='#fff';x.fillText('Repo',bx,1195);x.fillStyle='#ffd54a';x.fillText('star',bx+w1,1195);
+  x.textAlign='center';x.fillStyle='#fff';
+  if(SITE_URL){x.globalAlpha=.85;x.font='34px '+f;x.fillText(SITE_URL,540,1245)};
   c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='repost-kartim.png';a.click()});
 };
 </script>
